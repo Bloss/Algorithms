@@ -7,7 +7,7 @@ import java.util.Arrays;
  * on 16-7-26.
  * 自顶向下的堆排序
  */
-public class MergeSort {
+public class MergeSortUB {
     // 构建辅助数组
     private int[] aid;
 
