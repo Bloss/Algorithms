@@ -1,4 +1,4 @@
-package algorithms;
+package sort;
 
 /**
  * created by stickmy on 2016/7/30 11:57
