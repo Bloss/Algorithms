@@ -88,6 +88,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return max(x.right);
     }
 
+    // 向上取整
     public Key floor(Key key) {
         if(key == null)
             throw new NullPointerException("argument to floor() is null");
@@ -111,6 +112,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return t;
     }
 
+    // 向下取整
     public Key ceil(Key key) {
         if(key == null)
             throw new NullPointerException("argument to floor() is null");
@@ -132,5 +134,79 @@ public class BST<Key extends Comparable<Key>, Value> {
         if(t == null)
             return x;
         return t;
+    }
+
+    // 根据排名找元素值
+    public Key select(int k) {
+        return select(root, k).key;
+    }
+
+    private Node select(Node x, int k) {
+        if(x == null)
+            return null;
+        int t = size(x.left);
+        if(k < t)
+            return select(x.left, k);
+        if(k > t)
+            return select(x.right, k - t - 1);
+        return x;
+    }
+
+    // 根据元素值找到它的排名
+    public int rank(Key key) {
+        return rank(root, key);
+    }
+
+    private int rank(Node x, Key key) {
+        if(x == null)
+            return 0;
+        int cmp = key.compareTo(x.key);
+        if(cmp < 0)
+            return rank(x.left, key);
+        if(cmp > 0)
+            return 1 + rank(x.right, key) + size(x.left);
+        return size(x.left);
+    }
+
+    public void deleteMin() {
+        root = deleteMin(root);
+    }
+
+    private Node deleteMin(Node x) {
+        if(x.left == null)
+            return x.right;
+        x.left = deleteMin(x.left);
+        x.size = size(x.left) + size(x.right) + 1;
+        return x;
+    }
+
+    public void delete(Key key) {
+        root = delete(root, key);
+    }
+
+    private Node delete(Node x, Key key) {
+        if(x == null)
+            return null;
+        int cmp = key.compareTo(x.key);
+        if(cmp < 0)
+            x.left = delete(x.left, key);
+        else if(cmp > 0)
+            x.right = delete(x.right, key);
+        else{
+            if(x.left == null)
+                return x.right;
+            if(x.right == null)
+                return x.left;
+            // 暂存当前x节点
+            Node t = x;
+            // 找到大于t的最小节点, 赋值给x
+            x = min(t.right);
+            // 将上面找到的最小节点删除, 并将返回的树连接到x.right
+            x.right = deleteMin(t.right);
+            // 将t.left连接到x.left, 这样就完成了x替换t, 而此时没有任何节点连接到t, t会被删除
+            x.left = t.left;
+        }
+        x.size = size(x.left) + size(x.right) + 1;
+        return x;
     }
 }
