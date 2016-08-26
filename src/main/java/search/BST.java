@@ -136,8 +136,14 @@ public class BST<Key extends Comparable<Key>, Value> {
         return t;
     }
 
-    // 根据排名找元素值
+    /**
+     * 根据排名得出元素值
+     * @param k start with 0
+     * @return key 元素值
+     */
     public Key select(int k) {
+        if(k < 0 || k >= size())
+            throw new IllegalArgumentException();
         return select(root, k).key;
     }
 
@@ -154,6 +160,8 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     // 根据元素值找到它的排名
     public int rank(Key key) {
+        if(key == null)
+            throw new NullPointerException("argument to rank() is null");
         return rank(root, key);
     }
 
