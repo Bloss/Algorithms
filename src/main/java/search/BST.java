@@ -1,5 +1,10 @@
 package search;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * Created by stickmy
  * on 16-8-24.
@@ -200,7 +205,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             x.left = delete(x.left, key);
         else if(cmp > 0)
             x.right = delete(x.right, key);
-        else{
+        else {
             if(x.left == null)
                 return x.right;
             if(x.right == null)
@@ -230,4 +235,30 @@ public class BST<Key extends Comparable<Key>, Value> {
         return x;
     }
 
+    public List<Key> keys() {
+        return keys(min(), max());
+    }
+
+    public List<Key> keys(Key lo, Key hi) {
+        if(lo == null)
+            throw new NullPointerException("first argument to keys() is null");
+        if(hi == null)
+            throw new NullPointerException("second argument to keys() is null");
+        List<Key> list = new ArrayList<>();
+        keys(root, list, lo, hi);
+        return list;
+    }
+
+    private void keys(Node x, List<Key> list, Key lo, Key hi) {
+        if(x == null)
+            return;
+        int cmplo = lo.compareTo(x.key);
+        int cmphi = hi.compareTo(x.key);
+        if(cmplo < 0)
+            keys(x.left, list, lo, hi);
+        if(cmplo <= 0 && cmphi >= 0)
+            list.add(x.key);
+        if(cmphi > 0)
+            keys(x.right, list, lo, hi);
+    }
 }
