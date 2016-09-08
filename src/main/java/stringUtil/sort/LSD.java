@@ -5,6 +5,9 @@ package stringUtil.sort;
  * on 16-9-8.
  */
 public class LSD {
+    private LSD() {
+
+    }
     /**
      * 按照低位优先排序字符串
      * @param a 字符串数组
